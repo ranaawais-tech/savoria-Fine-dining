@@ -37,9 +37,9 @@ export default function HeroSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <a href="#reservation">
-                <Button className="w-full sm:w-auto bg-secondary hover:bg-secondary/90 text-white px-8 py-6 h-auto font-medium text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                  Book a Table
+              <a href="#reservation" className="w-full sm:w-auto">
+                <Button className="w-full bg-secondary hover:bg-secondary/90 text-white px-8 py-6 h-auto font-medium text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                  Reserve Now
                 </Button>
               </a>
             </motion.div>
