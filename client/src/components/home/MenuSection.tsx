@@ -1,18 +1,55 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { menuItems } from "@/data/menu";
+import { menuItems, MenuItem } from "@/data/menu";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 type Category = "starters" | "main" | "desserts" | "drinks";
+
+type CartItem = MenuItem & { quantity: number };
 
 export default function MenuSection() {
   const [activeCategory, setActiveCategory] = useState<Category>("starters");
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [addedItems, setAddedItems] = useState<number[]>([]);
+  const { toast } = useToast();
 
   const handleCategoryChange = (category: Category) => {
     setActiveCategory(category);
+  };
+
+  const addToCart = (item: MenuItem) => {
+    // Check if item is already in cart
+    const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+
+    if (existingItem) {
+      // Update quantity if item exists
+      setCart(
+        cart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        )
+      );
+    } else {
+      // Add new item with quantity 1
+      setCart([...cart, { ...item, quantity: 1 }]);
+    }
+
+    // Show added animation
+    setAddedItems([...addedItems, item.id]);
+    setTimeout(() => {
+      setAddedItems(addedItems.filter((id) => id !== item.id));
+    }, 2000);
+
+    // Show toast
+    toast({
+      title: "Added to cart",
+      description: `${item.name} has been added to your cart.`,
+    });
   };
 
   const container = {
@@ -20,14 +57,14 @@ export default function MenuSection() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const cardItem = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+    show: { opacity: 1, y: 0 },
   };
 
   return (
@@ -35,9 +72,9 @@ export default function MenuSection() {
       {/* Decorative elements */}
       <div className="absolute -top-24 -left-24 w-48 h-48 bg-accent/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-12 right-12 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
-      
+
       <div className="container mx-auto px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -51,12 +88,13 @@ export default function MenuSection() {
             Our Menu
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Discover our chef's selection of dishes prepared with the finest ingredients and culinary expertise.
+            Discover our chef's selection of dishes prepared with the finest
+            ingredients and culinary expertise.
           </p>
         </motion.div>
-        
+
         {/* Menu Category Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -68,16 +106,16 @@ export default function MenuSection() {
               { id: "starters", label: "Starters" },
               { id: "main", label: "Main Course" },
               { id: "desserts", label: "Desserts" },
-              { id: "drinks", label: "Drinks" }
+              { id: "drinks", label: "Drinks" },
             ].map((category) => (
-              <motion.button 
+              <motion.button
                 key={category.id}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className={cn(
                   "px-6 py-3 font-medium rounded-lg m-1 transition-all duration-300",
                   activeCategory === category.id
-                    ? "bg-white text-secondary shadow-md" 
+                    ? "bg-white text-secondary shadow-md"
                     : "text-gray-500 hover:text-secondary hover:bg-white/50"
                 )}
                 onClick={() => handleCategoryChange(category.id as Category)}
@@ -87,7 +125,7 @@ export default function MenuSection() {
             ))}
           </div>
         </motion.div>
-        
+
         {/* Menu Content */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -100,7 +138,7 @@ export default function MenuSection() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {menuItems[activeCategory].map((item) => (
-                <motion.div 
+                <motion.div
                   key={item.id}
                   variants={cardItem}
                   onMouseEnter={() => setHoveredId(item.id)}
@@ -108,39 +146,60 @@ export default function MenuSection() {
                   className="menu-item group relative overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-xl bg-white border border-gray-100"
                 >
                   <div className="relative h-64 overflow-hidden">
-                    <img 
-                      src={item.image} 
-                      alt={item.name} 
+                    <img
+                      src={item.image}
+                      alt={item.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
+
                     {/* Price tag */}
                     <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full shadow-md">
-                      <span className="font-bold text-secondary">${item.price}</span>
+                      <span className="font-bold text-secondary">
+                        ${item.price}
+                      </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-5">
                     <h3 className="font-display font-bold text-xl text-primary group-hover:text-secondary transition-colors duration-300 mb-2">
                       {item.name}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{item.description}</p>
-                    
+                    <p className="text-gray-600 mb-4 line-clamp-2">
+                      {item.description}
+                    </p>
+
                     <motion.div
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                     >
-                      <Button className="w-full bg-secondary hover:bg-secondary/90 text-white shadow-md group">
-                        <ShoppingCart className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                        Add to Cart
+                      <Button
+                        className={cn(
+                          "w-full shadow-md group transition-all duration-300",
+                          addedItems.includes(item.id)
+                            ? "bg-green-500 hover:bg-green-600 text-white"
+                            : "bg-secondary hover:bg-secondary/90 text-white"
+                        )}
+                        onClick={() => addToCart(item)}
+                      >
+                        {addedItems.includes(item.id) ? (
+                          <>
+                            <Check className="w-4 h-4 mr-2" />
+                            Added to Cart
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                            Add to Cart
+                          </>
+                        )}
                       </Button>
                     </motion.div>
                   </div>
-                  
+
                   {/* Hover effect */}
                   {hoveredId === item.id && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -154,7 +213,7 @@ export default function MenuSection() {
             </div>
           </motion.div>
         </AnimatePresence>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -163,7 +222,10 @@ export default function MenuSection() {
           className="mt-16 text-center"
         >
           <p className="text-gray-500 mb-4">Want to see our full menu?</p>
-          <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white">
+          <Button
+            variant="outline"
+            className="border-secondary text-secondary hover:bg-secondary hover:text-white"
+          >
             View Complete Menu
           </Button>
         </motion.div>
