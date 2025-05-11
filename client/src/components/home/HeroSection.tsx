@@ -32,7 +32,7 @@ export default function HeroSection() {
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
