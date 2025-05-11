@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import HeroSection from "@/components/home/HeroSection";
 import MenuSection from "@/components/home/MenuSection";
 import SpecialOffers from "@/components/home/SpecialOffers";
@@ -9,7 +8,7 @@ import Reservation from "@/components/home/Reservation";
 
 export default function Home() {
   return (
-    <Fragment>
+    <>
       <HeroSection />
       <MenuSection />
       <SpecialOffers />
@@ -17,6 +16,6 @@ export default function Home() {
       <Testimonials />
       <Newsletter />
       <Reservation />
-    </Fragment>
+    </>
   );
 }
