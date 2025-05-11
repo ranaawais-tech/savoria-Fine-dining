@@ -143,7 +143,7 @@ export default function Navbar() {
                   : "bg-white text-primary hover:bg-white/90"
               )}
             >
-              Book a Table
+              Reserve Now
             </Button>
           </a>
         </motion.div>
@@ -202,7 +202,7 @@ export default function Navbar() {
                     variant="default" 
                     className="w-full bg-secondary text-white hover:bg-secondary/90"
                   >
-                    Book a Table
+                    Reserve Now
                   </Button>
                 </a>
               </motion.div>

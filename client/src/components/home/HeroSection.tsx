@@ -51,7 +51,7 @@ export default function HeroSection() {
               <a href="#menu">
                 <Button 
                   variant="outline" 
-                  className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-6 h-auto font-medium text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full sm:w-auto border-2 border-black bg-white text-black hover:bg-black hover:text-white px-8 py-6 h-auto font-medium text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   View Menu
                 </Button>
