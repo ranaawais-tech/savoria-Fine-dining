@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+:root {
+  --background: 40 27% 98%;
+  --foreground: 210 11% 15%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 11% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 11% 15%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 210 11% 15%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 24 42% 50%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 32 15% 83%;
+  --accent-foreground: 210 11% 15%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 210 11% 15%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222 13% 18%;
+  --foreground: 0 0% 98%;
+  --muted: 223 13% 10%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 222 13% 18%;
+  --popover-foreground: 0 0% 98%;
+  --card: 222 13% 18%;
+  --card-foreground: 0 0% 98%;
+  --border: 223 13% 24%;
+  --input: 223 13% 24%; 
+  --primary: 210 11% 15%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 24 42% 50%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 32 15% 83%;
+  --accent-foreground: 210 11% 15%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 24 42% 50%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body antialiased bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+.special-offers-container {
+  scroll-snap-type: x mandatory;
+}
+
+.special-offers-container > div {
+  scroll-snap-align: start;
+}
+
+.menu-item:hover .menu-overlay {
+  opacity: 1;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
